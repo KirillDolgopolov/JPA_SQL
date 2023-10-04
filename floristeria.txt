@@ -1,0 +1,55 @@
+DROP
+    DATABASE IF EXISTS floristeríadb;
+CREATE DATABASE floristeríadb CHARACTER SET utf8mb4; USE
+    floristeríadb;
+
+CREATE TABLE `floristeria` (
+  `id` INT UNSIGNED PRIMARY KEY,
+  `nom` varchar(40) NOT NULL
+);
+
+CREATE TABLE `producte`(
+`id` INT UNSIGNED PRIMARY KEY,
+INDEX ind(id)
+);
+
+CREATE TABLE `arbre` (
+  `id` INT UNSIGNED PRIMARY KEY,
+  `alcada` double NOT NULL,
+  `preu` double NOT NULL,
+  `floristeriaId` INT UNSIGNED NOT NULL,
+  FOREIGN KEY(floristeriaId) REFERENCES floristeria(id),
+  FOREIGN KEY(id) REFERENCES producte(id)		  
+); 
+
+CREATE TABLE `flor` (
+  `id` INT UNSIGNED PRIMARY KEY,
+  `color` varchar(40) NOT NULL,
+  `preu` double NOT NULL,
+  `floristeriaId` INT UNSIGNED NOT NULL,
+  FOREIGN KEY(floristeriaId) REFERENCES floristeria(id),
+FOREIGN KEY(id) REFERENCES producte(id)  
+);
+
+CREATE TABLE `decoracio` (
+  `id` INT UNSIGNED PRIMARY KEY,
+  `material` enum('fusta','plàstic') NOT NULL,
+  `preu` double NOT NULL,
+  `floristeriaId` INT UNSIGNED NOT NULL,
+  FOREIGN KEY(floristeriaId) REFERENCES floristeria(id),
+FOREIGN KEY(id) REFERENCES producte(id)  
+);
+
+CREATE TABLE `ticket` (
+`id` INT UNSIGNED PRIMARY KEY,
+`floristeriaId` INT UNSIGNED NOT NULL,
+ FOREIGN KEY(floristeriaId) REFERENCES floristeria(id)    
+);
+
+CREATE TABLE `liniaTicket`(
+`id` INT UNSIGNED PRIMARY KEY,
+`producteId` INT UNSIGNED NOT NULL,
+`ticketId` INT UNSIGNED NOT NULL,
+FOREIGN KEY(producteId) REFERENCES producte(id),   
+FOREIGN KEY(ticketId) REFERENCES ticket(id)
+);
