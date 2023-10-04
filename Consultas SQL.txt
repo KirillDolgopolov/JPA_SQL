@@ -1,0 +1,23 @@
+INSERT INTO floristeria (id, nom) VALUES
+(0, "floristeria1");
+
+-- afegir arbre
+INSERT INTO producte (id) VALUES
+(0);
+
+INSERT INTO arbre (id, preu, alcada, floristeriaId) VALUES
+(0, 15, 120, 0);
+
+-- afegir flor
+INSERT INTO producte (id) VALUES
+(1);
+
+INSERT INTO flor (id, preu, color, floristeriaId) VALUES
+(1, 10,"blanc", 0);
+
+--afegir decoracio
+INSERT INTO producte (id) VALUES
+(2);
+
+INSERT INTO decoracio (id, preu, material, floristeriaId) VALUES
+(2, 35,"fusta", 0);
