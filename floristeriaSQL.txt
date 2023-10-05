@@ -10,7 +10,7 @@ CREATE TABLE `floristeria` (
 
 CREATE TABLE `producte`(
 `id` INT UNSIGNED PRIMARY KEY,
-`EnStock` BOOLEAN,
+`EnStock` BOOLEAN DEFAULT TRUE,
 INDEX ind(id)
 );
 

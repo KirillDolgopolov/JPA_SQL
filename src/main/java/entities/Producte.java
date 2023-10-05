@@ -6,6 +6,7 @@ public abstract class Producte {
 	private Long id;
 	private double preu;
 	private Long floristeriaId;
+	private boolean enStock;
 	
 	public static Long getIndex() {
 		return index++;
@@ -42,6 +43,14 @@ public abstract class Producte {
 
 	public void setFloristeriaId(Long floristeriaId) {
 		this.floristeriaId = floristeriaId;
+	}
+
+	public boolean isEnStock() {
+		return enStock;
+	}
+
+	public void setEnStock(boolean enStock) {
+		this.enStock = enStock;
 	}
 
 	
