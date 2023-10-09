@@ -9,31 +9,32 @@ import entities.Flor;
 import entities.Floristeria;
 import entities.Producte;
 import entities.Ticket;
-import persistenciaSQL.GestioFichero;
+import persistenciaSQL.Persistencia;
+//import persistenciaSQL.GestioFichero;
 
 public class Gestion implements IGestion {
 
 	public Floristeria crearFloristeria(Long id, String nom) {
 		Floristeria floristeria = new Floristeria(id, nom);
-		GestioFichero.writeFloristeria(floristeria);
+		Persistencia.saveFloristeria(id,nom);
 		return floristeria;
 	}
 
 	public void retirarArbre(Arbre arbre, Floristeria floristeria) {
 		floristeria.getArbres().remove(arbre);
-		GestioFichero.writeFloristeria(floristeria);
+		//GestioFichero.writeFloristeria(floristeria);
 
 	}
 
 	public void retirarFlor(Flor flor, Floristeria floristeria) {
 		floristeria.getFlors().remove(flor);
-		GestioFichero.writeFloristeria(floristeria);
+		//GestioFichero.writeFloristeria(floristeria);
 
 	}
 
 	public void retirarDecoracio(Decoracio decoracio, Floristeria floristeria) {
 		floristeria.getDecoracions().remove(decoracio);
-		GestioFichero.writeFloristeria(floristeria);
+		//GestioFichero.writeFloristeria(floristeria);
 
 	}
 
@@ -79,25 +80,26 @@ public class Gestion implements IGestion {
 	public void afegirProducte(Producte producte, Ticket ticket, Floristeria floristeria) {
 		ticket.getProductes().add(producte);
 		System.out.println("El producte " + producte.toString() + " se ha añadido");
-		GestioFichero.writeFloristeria(floristeria);
+		//GestioFichero.writeFloristeria(floristeria);
 	}
 
 	public void afegirArbre(Arbre arbol, Floristeria floristeria) {
 		floristeria.getArbres().add(arbol);
 		System.out.println("El arbol " + arbol.toString() + " se ha añadido");
-		GestioFichero.writeFloristeria(floristeria);
+		Persistencia.saveArbre(arbol);
+		
 	}
 
 	public void afegirFlor(Flor flor, Floristeria floristeria) {
 		floristeria.getFlors().add(flor);
 		System.out.println("La flor " + flor.toString() + " se ha añadido");
-		GestioFichero.writeFloristeria(floristeria);
+		Persistencia.saveFlor(flor);
 	}
 
 	public void afegirDecoracio(Decoracio decoracio, Floristeria floristeria) {
 		floristeria.getDecoracions().add(decoracio);
 		System.out.println("La decoració " + decoracio.toString() + " se ha añadido");
-		GestioFichero.writeFloristeria(floristeria);
+		Persistencia.saveDecoracio(decoracio);
 
 	}
 
@@ -105,11 +107,11 @@ public class Gestion implements IGestion {
 		System.out.println("Productes:");
 		System.out.println("----------");
 		System.out.println("Arbres:");
-		System.out.println(floristeria.getArbres());
+		System.out.println(Persistencia.getArbres());
 		System.out.println("Flors:");
-		System.out.println(floristeria.getFlors());
+		System.out.println(Persistencia.getFlors());
 		System.out.println("Decoracions:");
-		System.out.println(floristeria.getDecoracions());
+		System.out.println(Persistencia.getDecoracions());
 
 	}
 
@@ -156,6 +158,6 @@ public class Gestion implements IGestion {
 
 	public Floristeria inicialitzarFloristeria() {
 		
-		return GestioFichero.readFloristeria();
+		return new Floristeria(0L, "floristeria1");
 	}
 }

@@ -8,7 +8,6 @@ public class Arbre extends Producte{
 	}
 
 	public Arbre(double preu, double alcada) {
-		
 		super(preu);
 		this.alcada = alcada;
 		

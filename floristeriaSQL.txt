@@ -1,21 +1,21 @@
 DROP
-    DATABASE IF EXISTS floristeríadb;
-CREATE DATABASE floristeríadb CHARACTER SET utf8mb4; USE
-    floristeríadb;
+    DATABASE IF EXISTS floristeriadb;
+CREATE DATABASE floristeriadb CHARACTER SET utf8mb4; USE
+    floristeriadb;
 
 CREATE TABLE `floristeria` (
-  `id` INT UNSIGNED PRIMARY KEY,
+  `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   `nom` varchar(40) NOT NULL
 );
 
 CREATE TABLE `producte`(
-`id` INT UNSIGNED PRIMARY KEY,
+`id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 `EnStock` BOOLEAN DEFAULT TRUE,
 INDEX ind(id)
 );
 
 CREATE TABLE `arbre` (
-  `id` INT UNSIGNED PRIMARY KEY,
+  `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   `alcada` double NOT NULL,
   `preu` double NOT NULL,
   `floristeriaId` INT UNSIGNED NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE `arbre` (
 ); 
 
 CREATE TABLE `flor` (
-  `id` INT UNSIGNED PRIMARY KEY,
+  `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   `color` varchar(40) NOT NULL,
   `preu` double NOT NULL,
   `floristeriaId` INT UNSIGNED NOT NULL,
@@ -33,8 +33,8 @@ FOREIGN KEY(id) REFERENCES producte(id)
 );
 
 CREATE TABLE `decoracio` (
-  `id` INT UNSIGNED PRIMARY KEY,
-  `material` enum('fusta','plàstic') NOT NULL,
+  `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  `material` enum('fusta','plastic') NOT NULL,
   `preu` double NOT NULL,
   `floristeriaId` INT UNSIGNED NOT NULL,
   FOREIGN KEY(floristeriaId) REFERENCES floristeria(id),
@@ -42,13 +42,13 @@ FOREIGN KEY(id) REFERENCES producte(id)
 );
 
 CREATE TABLE `ticket` (
-`id` INT UNSIGNED PRIMARY KEY,
+`id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 `floristeriaId` INT UNSIGNED NOT NULL,
  FOREIGN KEY(floristeriaId) REFERENCES floristeria(id)    
 );
 
 CREATE TABLE `liniaTicket`(
-`id` INT UNSIGNED PRIMARY KEY,
+`id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 `producteId` INT UNSIGNED NOT NULL,
 `ticketId` INT UNSIGNED NOT NULL,
 FOREIGN KEY(producteId) REFERENCES producte(id),   

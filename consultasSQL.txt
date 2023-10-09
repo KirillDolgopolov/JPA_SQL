@@ -1,12 +1,9 @@
-INSERT INTO floristeria (id, nom) VALUES
-(0, "floristeria1");
+INSERT INTO floristeria (id, nom) VALUES (0, "floristeria1");
 
 -- afegir arbre
-INSERT INTO producte (id) VALUES
-(0);
+INSERT INTO producte (id) VALUES(0);
 
-INSERT INTO arbre (id, preu, alcada, floristeriaId) VALUES
-(0, 15, 120, 0);
+INSERT INTO arbre (id, preu, alcada, floristeriaId) VALUES(0, 15, 120, 0);
 
 -- afegir flor
 INSERT INTO producte (id) VALUES

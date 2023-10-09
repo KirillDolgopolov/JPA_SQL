@@ -2,18 +2,18 @@ package entities;
 
 public abstract class Producte {
 	
-	private static Long index=0L;
+	//private static Long index=0L;
 	private Long id;
 	private double preu;
 	private Long floristeriaId;
 	private boolean enStock;
 	
-	public static Long getIndex() {
+	/*public static Long getIndex() {
 		return index++;
-	}
+	}*/
 	
 	public Producte(double preu) {
-		id = getIndex();
+		//id = getIndex();
 		this.preu = preu;
 	}
 

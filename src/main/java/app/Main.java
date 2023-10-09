@@ -352,7 +352,7 @@ public class Main {
 		System.out.println("Crear Floristeria.\n");
 		System.out.println("nom : ");
 		String nom = sc.nextLine();
-		Long index = 1L; // generar index
+		Long index = 0L; // generar index
 		// Crear i recuperar Floristeria
 		return gestion.crearFloristeria(index, nom);
 
