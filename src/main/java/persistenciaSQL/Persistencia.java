@@ -7,11 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
-
 import entities.Arbre;
 import entities.Decoracio;
 import entities.Flor;
 import entities.Material;
+import entities.Producte;
+import entities.Ticket;
+import entities.LiniaTicket;
 
 public class Persistencia {
 
@@ -25,15 +27,14 @@ public class Persistencia {
 		return null;
 	}
 
-	public static void saveFloristeria(Long id, String nom) {
+	public static void saveFloristeria(String nom) {
 
 		Connection connexio = connexio();
-		String peticio = "INSERT INTO floristeria (id, nom) VALUES (?,?);";
+		String peticio = "INSERT INTO floristeria (nom) VALUES (?);";
 
 		try {
 			PreparedStatement ps = connexio.prepareStatement(peticio);
-			ps.setLong(1, id);
-			ps.setString(2, nom);
+			ps.setString(1, nom);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -150,14 +151,14 @@ public class Persistencia {
 				llista.add(arbre);
 
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		return llista;
 	}
-	
+
 	public static List<Flor> getFlors() {
 
 		Connection connexio = connexio();
@@ -177,14 +178,14 @@ public class Persistencia {
 				llista.add(flor);
 
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		return llista;
 	}
-	
+
 	public static List<Decoracio> getDecoracions() {
 
 		Connection connexio = connexio();
@@ -198,14 +199,14 @@ public class Persistencia {
 			while (rs.next()) {
 				Decoracio decoracio = new Decoracio();
 				decoracio.setId(rs.getLong(1));
-				Material material = (rs.getString(2).equals("fusta")) ?Material.FUSTA:Material.PLASTIC;
+				Material material = (rs.getString(2).equals("fusta")) ? Material.FUSTA : Material.PLASTIC;
 				decoracio.setMaterial(material);
 				decoracio.setPreu(rs.getDouble(3));
 				decoracio.setFloristeriaId(rs.getLong(4));
 				llista.add(decoracio);
 
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -213,4 +214,192 @@ public class Persistencia {
 		return llista;
 	}
 
+	public static int getStockQuantitatsArbres() {
+		Connection connexio = connexio();
+		String peticio = "SELECT COUNT(*) FROM arbre INNER JOIN producte ON arbre.id = producte.id WHERE producte.enStock = 1";
+		PreparedStatement ps;
+		try {
+			ps = connexio.prepareStatement(peticio);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int getStockQuantitatsFlors() {
+		Connection connexio = connexio();
+		String peticio = "SELECT COUNT(*) FROM flor INNER JOIN producte ON flor.id = producte.id WHERE producte.enStock = 1";
+		PreparedStatement ps;
+		try {
+			ps = connexio.prepareStatement(peticio);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int getStockQuantitatsDecoracions() {
+		Connection connexio = connexio();
+		String peticio = "SELECT COUNT(*) FROM decoracio INNER JOIN producte ON decoracio.id = producte.id WHERE producte.enStock = 1";
+		PreparedStatement ps;
+		try {
+			ps = connexio.prepareStatement(peticio);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static double getStockValor() {
+		Connection connexio = connexio();
+		String peticio = "SELECT SUM(preu) FROM (\r\n"
+				+ "    SELECT preu FROM arbre INNER JOIN producte ON arbre.id = producte.id WHERE producte.enStock = 1\r\n"
+				+ "    UNION ALL\r\n"
+				+ "    SELECT preu FROM flor INNER JOIN producte ON flor.id = producte.id WHERE producte.enStock = 1\r\n"
+				+ "    UNION ALL\r\n"
+				+ "    SELECT preu FROM decoracio INNER JOIN producte ON decoracio.id = producte.id WHERE producte.enStock = 1)AS combined_tables;";
+		PreparedStatement ps;
+		try {
+			ps = connexio.prepareStatement(peticio);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble(1);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+	
+	public static void deleteArbre(Arbre arbre) {
+		Connection connexio = connexio();
+		String peticio = "UPDATE producte SET enStock = 0 WHERE ID = ?;";
+		PreparedStatement ps;
+		try {
+			ps = connexio.prepareStatement(peticio);
+			ps.setLong(1, arbre.getId());
+			ps.executeUpdate();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void deleteFlor(Flor flor) {
+		Connection connexio = connexio();
+		String peticio = "UPDATE producte SET enStock = 0 WHERE ID = ?;";
+		PreparedStatement ps;
+		try {
+			ps = connexio.prepareStatement(peticio);
+			ps.setLong(1, flor.getId());
+			ps.executeUpdate();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void deleteDecoracio(Decoracio decoracio) {
+		Connection connexio = connexio();
+		String peticio = "UPDATE producte SET enStock = 0 WHERE ID = ?;";
+		PreparedStatement ps;
+		try {
+			ps = connexio.prepareStatement(peticio);
+			ps.setLong(1, decoracio.getId());
+			ps.executeUpdate();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static Long saveTicket() {
+		Connection connexio = connexio();
+		String peticio = "INSERT INTO ticket (floristeriaId) VALUES (1);";
+		String peticio2 = "SELECT LAST_INSERT_ID();";
+		Long id=null;
+		try {
+			PreparedStatement ps = connexio.prepareStatement(peticio);
+			ps.executeUpdate();
+			PreparedStatement ps2 = connexio.prepareStatement(peticio2);
+			ResultSet rs = ps2.executeQuery();
+			id = null;
+			if (rs.next()) {
+				id = rs.getLong(1);
+			}
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+
+	}
+	
+	public static void saveLiniaTicket(Long producteId, Long ticketId) {
+		Connection connexio = connexio();
+		String peticio = "UPDATE producte SET enStock = 0 WHERE ID = ?;";
+		String peticio2 = "INSERT INTO liniaticket (producteId, ticketId) VALUES (?,?);";
+	
+		try {
+			PreparedStatement ps = connexio.prepareStatement(peticio);
+			ps.setLong(1,producteId);
+			ps.executeUpdate();
+			PreparedStatement ps2 = connexio.prepareStatement(peticio2);
+			ps2.setLong(1,producteId);
+			ps2.setLong(2,ticketId);
+			ps2.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static List<LiniaTicket> getLiniesTickets() {
+		Connection connexio = connexio();
+		String peticio = "SELECT * FROM liniaTicket ORDER BY ticketId;";
+		List<LiniaTicket> llista = new ArrayList<LiniaTicket>();
+		
+		try {
+			PreparedStatement ps = connexio.prepareStatement(peticio);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				LiniaTicket lt = new LiniaTicket();
+				lt.setId(rs.getLong(1));
+				lt.setProducteId(rs.getLong(2));
+				lt.setTicketId(rs.getLong(3));
+				llista.add(lt);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return llista;
+		
+	}
 }

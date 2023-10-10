@@ -6,10 +6,11 @@ import entities.Arbre;
 import entities.Decoracio;
 import entities.Flor;
 import entities.Floristeria;
+import entities.LiniaTicket;
 
 public interface IGestion {
 
-	Floristeria crearFloristeria(Long id, String nom);
+	Floristeria crearFloristeria(String nom);
 
 	void retirarArbre(Arbre arbre, Floristeria floristeria);
 
@@ -29,10 +30,12 @@ public interface IGestion {
 
 	void imprimirStockValor(Floristeria floristeria);
 
-	//void crearTicket();
+	Long crearTicket();
 
-	void mostrarTickets(Floristeria floristeria);
+	List<LiniaTicket> mostrarTickets();
 
 	void visualitzarTotalTickets(Floristeria floristeria);
+	
+	void crearLiniaTicket(Long producteId, Long ticketId);
 
 }

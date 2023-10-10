@@ -12,8 +12,7 @@ public class Floristeria  {
 	private List<Decoracio> decoracions;
 	private List<Ticket> tickets;
 
-	public Floristeria(Long id, String nom) {
-		this.id = id;
+	public Floristeria(String nom) {
 		this.nom = nom;
 		this.arbres = new ArrayList<Arbre>();
 		this.flors = new ArrayList<Flor>();

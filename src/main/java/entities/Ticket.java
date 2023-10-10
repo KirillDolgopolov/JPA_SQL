@@ -5,17 +5,11 @@ import java.util.List;
 
 public class Ticket {
 	private Long id;
-	private static Long index=0L;
 	private Long floristeriaId;
 	
 	private List<Producte> productes;
-	
-	public static Long getIndex() {
-		return index++;
-	}
-	
+		
 	public Ticket() {
-		id=getIndex();
 		productes = new ArrayList<Producte>();
 	}
 

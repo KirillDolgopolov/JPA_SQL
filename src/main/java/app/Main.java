@@ -206,12 +206,14 @@ public class Main {
 	}
 
 	private static void mostrarTickets(Gestion gestion, Floristeria floristeria) {
-		gestion.mostrarTickets(floristeria);
+		System.out.println(gestion.mostrarTickets());
 
 	}
 
 	private static void crearTicket(Gestion gestion, Floristeria floristeria) {
 		Ticket ticket = new Ticket();
+		ticket.setFloristeriaId(floristeria.getId());
+		ticket.setId(gestion.crearTicket());
 		boolean finTicket = false;
 		byte opcion;
 
@@ -225,14 +227,13 @@ public class Main {
 			switch (opcion) {
 			case 1:
 				System.out.println("Arbres:");
-				System.out.println(floristeria.getArbres());
+				System.out.println(gestion.getArbres());
 				System.out.println("id del producte a passar al ticket: ");
 				Long id = sc.nextLong();
-				Arbre arbre = gestion.buscarArbre(id, floristeria.getArbres());
+				Arbre arbre = gestion.buscarArbre(id, gestion.getArbres());
 
 				if (arbre != null) {
-					gestion.afegirProducte(arbre, ticket, floristeria);
-					gestion.retirarArbre(arbre, floristeria);
+					gestion.crearLiniaTicket(id, ticket.getId());
 					System.out.println("Arbre afegit al ticket");
 
 				} else
@@ -240,30 +241,28 @@ public class Main {
 				break;
 			case 2:
 				System.out.println("Flors:");
-				System.out.println(floristeria.getFlors());
+				System.out.println(gestion.getFlors());
 				System.out.println("id del producte a passar al ticket: ");
 				Long id2 = sc.nextLong();
-				Flor flor = gestion.buscarFlor(id2, floristeria.getFlors());
+				Flor flor = gestion.buscarFlor(id2, gestion.getFlors());
 
 				if (flor != null) {
-					gestion.afegirProducte(flor, ticket, floristeria);
-					gestion.retirarFlor(flor, floristeria);
-					System.out.println("Arbre afegit al ticket");
+					gestion.crearLiniaTicket(id2, ticket.getId());
+					System.out.println("Flor afegida al ticket");
 
 				} else
 					System.out.println("Producte amb aquest ID no trobat");
 				break;
 			case 3:
 				System.out.println("Decoracions:");
-				System.out.println(floristeria.getDecoracions());
+				System.out.println(gestion.getDecoracions());
 				System.out.println("id del producte a passar al ticket: ");
 				Long id3 = sc.nextLong();
-				Decoracio decoracio = gestion.buscarDecoracio(id3, floristeria.getDecoracions());
+				Decoracio decoracio = gestion.buscarDecoracio(id3, gestion.getDecoracions());
 
 				if (decoracio != null) {
-					gestion.afegirProducte(decoracio, ticket, floristeria);
-					gestion.retirarDecoracio(decoracio, floristeria);
-					System.out.println("Arbre afegit al ticket");
+					gestion.crearLiniaTicket(id3, ticket.getId());
+					System.out.println("Decoracio afegida al ticket");
 
 				} else
 					System.out.println("Producte amb aquest ID no trobat");
@@ -294,10 +293,10 @@ public class Main {
 
 	private static void retirarDecoracio(Gestion gestion, Floristeria floristeria) {
 		System.out.println("Decoracions:");
-		System.out.println(floristeria.getDecoracions());
+		System.out.println(gestion.getDecoracions());
 		System.out.println("id del producte a retirar: ");
 		Long id = sc.nextLong();
-		Decoracio decoracio = gestion.buscarDecoracio(id, floristeria.getDecoracions());
+		Decoracio decoracio = gestion.buscarDecoracio(id, gestion.getDecoracions());
 
 		// buscar by id
 
@@ -311,10 +310,10 @@ public class Main {
 
 	private static void retirarFlor(Gestion gestion, Floristeria floristeria) {
 		System.out.println("Flors:");
-		System.out.println(floristeria.getFlors());
+		System.out.println(gestion.getFlors());
 		System.out.println("id del producte a retirar: ");
 		Long id = sc.nextLong();
-		Flor flor = gestion.buscarFlor(id, floristeria.getFlors());
+		Flor flor = gestion.buscarFlor(id, gestion.getFlors());
 
 		// buscar by id
 
@@ -328,10 +327,10 @@ public class Main {
 
 	private static void retirarArbre(Gestion gestion, Floristeria floristeria) {
 		System.out.println("Arbres:");
-		System.out.println(floristeria.getArbres());
+		System.out.println(gestion.getArbres());
 		System.out.println("id del producte a retirar: ");
 		Long id = sc.nextLong();
-		Arbre arbre = gestion.buscarArbre(id, floristeria.getArbres());
+		Arbre arbre = gestion.buscarArbre(id, gestion.getArbres());
 
 		// buscar by id
 
@@ -352,9 +351,9 @@ public class Main {
 		System.out.println("Crear Floristeria.\n");
 		System.out.println("nom : ");
 		String nom = sc.nextLine();
-		Long index = 0L; // generar index
+		Long index = null; // generar index
 		// Crear i recuperar Floristeria
-		return gestion.crearFloristeria(index, nom);
+		return gestion.crearFloristeria(nom);
 
 	}
 

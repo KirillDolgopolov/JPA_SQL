@@ -10,9 +10,8 @@ public class LiniaTicket {
 		
 	}
 	
-	public LiniaTicket(Long id, Long producteId, Long ticketId) {
+	public LiniaTicket(Long producteId, Long ticketId) {
 		
-		this.id = id;
 		this.producteId = producteId;
 		this.ticketId = ticketId;
 	}
@@ -41,5 +40,9 @@ public class LiniaTicket {
 		this.ticketId = ticketId;
 	}
 
+	@Override
+	public String toString() {
+		return "LiniaTicket [id=" + id + ", producteId=" + producteId + ", ticketId=" + ticketId + "]";
+	}
 	
 }

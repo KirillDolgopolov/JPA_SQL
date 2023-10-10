@@ -7,6 +7,7 @@ import entities.Arbre;
 import entities.Decoracio;
 import entities.Flor;
 import entities.Floristeria;
+import entities.LiniaTicket;
 import entities.Producte;
 import entities.Ticket;
 import persistenciaSQL.Persistencia;
@@ -14,28 +15,33 @@ import persistenciaSQL.Persistencia;
 
 public class Gestion implements IGestion {
 
-	public Floristeria crearFloristeria(Long id, String nom) {
-		Floristeria floristeria = new Floristeria(id, nom);
-		Persistencia.saveFloristeria(id,nom);
+	public Floristeria crearFloristeria(String nom) {
+		Floristeria floristeria = new Floristeria(nom);
+		Persistencia.saveFloristeria(nom);
 		return floristeria;
 	}
 
 	public void retirarArbre(Arbre arbre, Floristeria floristeria) {
-		floristeria.getArbres().remove(arbre);
-		//GestioFichero.writeFloristeria(floristeria);
-
+		if(arbre==null) {
+			System.out.println("Arbre no trobat");
+		}else {
+		Persistencia.deleteArbre(arbre);
+		}
 	}
 
 	public void retirarFlor(Flor flor, Floristeria floristeria) {
-		floristeria.getFlors().remove(flor);
-		//GestioFichero.writeFloristeria(floristeria);
-
+		if(flor==null) {
+			System.out.println("Flor no trobada");
+		}else {
+		Persistencia.deleteFlor(flor);
+		}
 	}
-
 	public void retirarDecoracio(Decoracio decoracio, Floristeria floristeria) {
-		floristeria.getDecoracions().remove(decoracio);
-		//GestioFichero.writeFloristeria(floristeria);
-
+		if(decoracio==null) {
+			System.out.println("Decoracio no trobada");
+		}else {
+		Persistencia.deleteDecoracio(decoracio);
+		}
 	}
 
 	public Decoracio buscarDecoracio(Long id, List<Decoracio> listDeProducte) {
@@ -80,14 +86,14 @@ public class Gestion implements IGestion {
 	public void afegirProducte(Producte producte, Ticket ticket, Floristeria floristeria) {
 		ticket.getProductes().add(producte);
 		System.out.println("El producte " + producte.toString() + " se ha añadido");
-		//GestioFichero.writeFloristeria(floristeria);
+		// GestioFichero.writeFloristeria(floristeria);
 	}
 
 	public void afegirArbre(Arbre arbol, Floristeria floristeria) {
 		floristeria.getArbres().add(arbol);
 		System.out.println("El arbol " + arbol.toString() + " se ha añadido");
 		Persistencia.saveArbre(arbol);
-		
+
 	}
 
 	public void afegirFlor(Flor flor, Floristeria floristeria) {
@@ -114,35 +120,51 @@ public class Gestion implements IGestion {
 		System.out.println(Persistencia.getDecoracions());
 
 	}
+	public static List<Arbre> getArbres(){
+		
+	return Persistencia.getArbres();	
 
+	}
+	
+	public static List<Flor> getFlors(){
+		
+		return Persistencia.getFlors();	
+
+		}
+	
+	public static List<Decoracio> getDecoracions(){
+		
+		return Persistencia.getDecoracions();	
+
+		}
+	
 	public void imprimirStockQuantitats(Floristeria floristeria) {
 		System.out.println("Productes amb Quantitats:");
 		System.out.println("----------");
 		System.out.print("Arbres: ");
-		System.out.println(floristeria.getArbres().size());
+		// System.out.println(Persistencia.getArbres().size());
+		System.out.println(Persistencia.getStockQuantitatsArbres());
 		System.out.print("Flors: ");
-		System.out.println(floristeria.getFlors().size());
+		// System.out.println(Persistencia.getFlors().size());
+		System.out.println(Persistencia.getStockQuantitatsFlors());
 		System.out.print("Decoracions: ");
-		System.out.println(floristeria.getDecoracions().size());
+		// System.out.println(Persistencia.getDecoracions().size());
+		System.out.println(Persistencia.getStockQuantitatsDecoracions());
 
 	}
 
 	public void imprimirStockValor(Floristeria floristeria) {
-		System.out.print("Valor Total Productes de la floristeria : " + floristeria.getNom());
-		System.out.println(
-				floristeria.getValorArbres() + floristeria.getValorFlors() + floristeria.getValorDecoracions());
-
+		System.out.println("Valor Total Productes de la floristeria : " + floristeria.getNom());
+		System.out.println(Persistencia.getStockValor());
 	}
 
-	// public void crearTicket() {
-	// return null;
-	// }
+	public Long crearTicket() {
+	  return Persistencia.saveTicket();
+	 }
 
-	public void mostrarTickets(Floristeria floristeria) {
-		for (Ticket ticket : floristeria.getTickets()) {
-			System.out.println(ticket.getProductes());
-		}
-
+	public List<LiniaTicket> mostrarTickets() {
+		
+		return Persistencia.getLiniesTickets();
 	}
 
 	public void visualitzarTotalTickets(Floristeria floristeria) {
@@ -157,7 +179,13 @@ public class Gestion implements IGestion {
 	}
 
 	public Floristeria inicialitzarFloristeria() {
+
+		return new Floristeria("floristeria1");
+	}
+
+	public void crearLiniaTicket(Long producteId, Long ticketId) {
 		
-		return new Floristeria(0L, "floristeria1");
+		Persistencia.saveLiniaTicket(producteId, ticketId);
+		
 	}
 }

@@ -1,23 +1,22 @@
-INSERT INTO floristeria (id, nom) VALUES (0, "floristeria1");
+INSERT INTO floristeria (id, nom) VALUES (null, "floristeria1");
 
 -- afegir arbre
-INSERT INTO producte (id) VALUES(0);
 
-INSERT INTO arbre (id, preu, alcada, floristeriaId) VALUES(0, 15, 120, 0);
+"INSERT INTO producte(id) VALUES(NULL);"
+"SELECT LAST_INSERT_ID();"
+"INSERT INTO arbre (id, preu, alcada, floristeriaId) VALUES(?,?,?,1);"
 
 -- afegir flor
-INSERT INTO producte (id) VALUES
-(1);
 
-INSERT INTO flor (id, preu, color, floristeriaId) VALUES
-(1, 10,"blanc", 0);
+"INSERT INTO producte(id) VALUES(NULL);"
+"SELECT LAST_INSERT_ID();"
+"INSERT INTO flor (id, preu, color, floristeriaId) VALUES(?,?,?,1);"
 
 --afegir decoracio
-INSERT INTO producte (id) VALUES
-(2);
 
-INSERT INTO decoracio (id, preu, material, floristeriaId) VALUES
-(2, 35,"fusta", 0);
+"INSERT INTO producte(id) VALUES(NULL);"
+"SELECT LAST_INSERT_ID();"
+"INSERT INTO decoracio (id, preu, material, floristeriaId) VALUES(?,?,?,1);"
 
 -- Stock
 SELECT * FROM arbre INNER JOIN producte ON arbre.id = producte.id WHERE producte.enStock = 1;
@@ -37,8 +36,16 @@ SELECT SUM(preu) FROM arbre INNER JOIN producte ON arbre.id = producte.id WHERE 
 SELECT SUM(preu) FROM flor INNER JOIN producte ON flor.id = producte.id WHERE producte.enStock = 1;
 SELECT SUM(preu) FROM decoracio INNER JOIN producte ON decoracio.id = producte.id WHERE producte.enStock = 1;
 
+-- Valor stock v2
+SELECT SUM(preu) FROM (
+    SELECT preu FROM arbre INNER JOIN producte ON arbre.id = producte.id WHERE producte.enStock = 1
+    UNION ALL
+    SELECT preu FROM flor INNER JOIN producte ON flor.id = producte.id WHERE producte.enStock = 1
+    UNION ALL
+    SELECT preu FROM decoracio INNER JOIN producte ON decoracio.id = producte.id WHERE producte.enStock = 1)AS combined_tables;
+
 -- crear Ticket
-INSERT INTO ticket (id, floristeriaId) VALUES (0, 0);
+INSERT INTO ticket (id, floristeriaId) VALUES (null, 1);
 
 -- Afegir arbre, Afegir flor, Afegir decoracio
 -- seleccionar id arbre, id flor, id decoracio
