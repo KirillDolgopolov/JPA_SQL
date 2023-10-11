@@ -288,7 +288,7 @@ public class Persistencia {
 
 		return 0;
 	}
-	
+
 	public static void deleteArbre(Arbre arbre) {
 		Connection connexio = connexio();
 		String peticio = "UPDATE producte SET enStock = 0 WHERE ID = ?;";
@@ -297,13 +297,13 @@ public class Persistencia {
 			ps = connexio.prepareStatement(peticio);
 			ps.setLong(1, arbre.getId());
 			ps.executeUpdate();
-	
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void deleteFlor(Flor flor) {
 		Connection connexio = connexio();
 		String peticio = "UPDATE producte SET enStock = 0 WHERE ID = ?;";
@@ -312,13 +312,13 @@ public class Persistencia {
 			ps = connexio.prepareStatement(peticio);
 			ps.setLong(1, flor.getId());
 			ps.executeUpdate();
-	
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void deleteDecoracio(Decoracio decoracio) {
 		Connection connexio = connexio();
 		String peticio = "UPDATE producte SET enStock = 0 WHERE ID = ?;";
@@ -327,7 +327,7 @@ public class Persistencia {
 			ps = connexio.prepareStatement(peticio);
 			ps.setLong(1, decoracio.getId());
 			ps.executeUpdate();
-	
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -338,7 +338,7 @@ public class Persistencia {
 		Connection connexio = connexio();
 		String peticio = "INSERT INTO ticket (floristeriaId) VALUES (1);";
 		String peticio2 = "SELECT LAST_INSERT_ID();";
-		Long id=null;
+		Long id = null;
 		try {
 			PreparedStatement ps = connexio.prepareStatement(peticio);
 			ps.executeUpdate();
@@ -348,7 +348,7 @@ public class Persistencia {
 			if (rs.next()) {
 				id = rs.getLong(1);
 			}
-	
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -356,33 +356,33 @@ public class Persistencia {
 		return id;
 
 	}
-	
+
 	public static void saveLiniaTicket(Long producteId, Long ticketId) {
 		Connection connexio = connexio();
 		String peticio = "UPDATE producte SET enStock = 0 WHERE ID = ?;";
 		String peticio2 = "INSERT INTO liniaticket (producteId, ticketId) VALUES (?,?);";
-	
+
 		try {
 			PreparedStatement ps = connexio.prepareStatement(peticio);
-			ps.setLong(1,producteId);
+			ps.setLong(1, producteId);
 			ps.executeUpdate();
 			PreparedStatement ps2 = connexio.prepareStatement(peticio2);
-			ps2.setLong(1,producteId);
-			ps2.setLong(2,ticketId);
+			ps2.setLong(1, producteId);
+			ps2.setLong(2, ticketId);
 			ps2.executeUpdate();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public static List<LiniaTicket> getLiniesTickets() {
 		Connection connexio = connexio();
 		String peticio = "SELECT * FROM liniaTicket ORDER BY ticketId;";
 		List<LiniaTicket> llista = new ArrayList<LiniaTicket>();
-		
+
 		try {
 			PreparedStatement ps = connexio.prepareStatement(peticio);
 			ResultSet rs = ps.executeQuery();
@@ -400,6 +400,35 @@ public class Persistencia {
 			e.printStackTrace();
 		}
 		return llista;
-		
+
 	}
+
+	public static double getDinersGuanyats() {
+
+		Connection connexio = connexio();
+		String peticio = "SELECT SUM(preu) \r\n" + "	FROM (\r\n"
+				+ "	    SELECT preu FROM arbre INNER JOIN liniaTicket ON arbre.id = liniaTicket.producteId\r\n"
+				+ "	    UNION ALL\r\n"
+				+ "	    SELECT preu FROM flor INNER JOIN liniaTicket ON flor.id = liniaTicket.producteId\r\n"
+				+ "	    UNION ALL\r\n"
+				+ "	    SELECT preu FROM decoracio INNER JOIN liniaTicket ON decoracio.id = liniaTicket.producteId\r\n"
+				+ "	) AS combined_tables;";
+
+		PreparedStatement ps;
+		try {
+			ps = connexio.prepareStatement(peticio);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return rs.getDouble(1);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
+
 }
