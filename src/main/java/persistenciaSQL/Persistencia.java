@@ -20,7 +20,7 @@ public class Persistencia {
 	public static Connection connexio() {
 
 		try {
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/floristeriadb", "root", "");
+			return DriverManager.getConnection("jdbc:mysql://localhost:3306/floristeríadb", "root", "12345");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -372,7 +372,6 @@ public class Persistencia {
 			ps2.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -396,7 +395,6 @@ public class Persistencia {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return llista;

@@ -22,7 +22,7 @@ public class Decoracio extends Producte {
 	
 	@Override
 	public String toString() {
-		return getId() +"\t" +  getPreu()+"\t" + material;
+		return "€" +  getPreu()+" " + material;
 	}
 
 }

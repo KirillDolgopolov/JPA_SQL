@@ -1,38 +1,31 @@
 package entities;
 
-public class Arbre extends Producte{
-	private double alcada;
+public class Arbre extends Producte {
+    private double alcada;
 
-	public Arbre() {
-		
-	}
+    public Arbre() {
 
-	public Arbre(double preu, double alcada) {
-		super(preu);
-		this.alcada = alcada;
-		
-		
-	}
+    }
 
-	public double getAlcada() {
-		return alcada;
-	}
+    public Arbre(double preu, double alcada) {
+        super(preu);
+        this.alcada = alcada;
 
-	public void setAlcada(double alcada) {
-		this.alcada = alcada;
-	}
 
-	@Override
-	public String toString() {
-		return getId() +"\t" +  getPreu()+"\t" + alcada;
-	}
+    }
 
-	
+    public double getAlcada() {
+        return alcada;
+    }
 
-	
+    public void setAlcada(double alcada) {
+        this.alcada = alcada;
+    }
 
-	
+    @Override
+    public String toString() {
+        return "€" + getPreu() + " " + alcada;
+    }
 
-	
-	
+
 }

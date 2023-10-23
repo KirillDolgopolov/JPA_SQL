@@ -22,7 +22,7 @@ public class Flor extends Producte{
 	
 	@Override
 	public String toString() {
-		return getId() +"\t" +  getPreu()+"\t" + color;
+		return "€" +  getPreu()+" " + color;
 	}
 
 }
